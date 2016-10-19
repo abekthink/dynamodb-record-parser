@@ -49,7 +49,7 @@ output result: the dictionary data in python
     "SequenceNumber": "6321200000000003285225378", 
     "OldImage": {
         "string": "xxx", 
-        "integer": 123.0, 
+        "integer": 123, 
     }, 
     "Keys": {
         "key": "test123"
@@ -57,7 +57,7 @@ output result: the dictionary data in python
     "SizeBytes": 14330, 
     "NewImage": {
         "string": "zzz", 
-        "integer": 345.0, 
+        "integer": 345, 
     }, 
     "ApproximateCreationDateTime": 1476859080, 
     "StreamViewType": "NEW_AND_OLD_IMAGES"

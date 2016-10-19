@@ -23,12 +23,12 @@ from __future__ import with_statement
 
 import traceback
 import json
-import decimal
+from decimal import Decimal
 from boto3.dynamodb.types import Binary
 
 
 def parse_dynamodb_record(record):
-    """the main function: transfrom a dynamodb record into dict-type data"""
+    # the main function: transforms a dynamodb record into dict-type data
     if not record:
         return None
 
@@ -78,7 +78,14 @@ def format_attribute(key, value):
     elif key == 'S':
         return value
     elif key == 'N':
-        return decimal.Decimal(value)
+        if value:
+            if is_integer(value):
+                return int(value)
+            else:
+                return Decimal(value)
+        else:
+            return None
+
     elif key == 'NULL':
         return None
     else:
@@ -87,17 +94,22 @@ def format_attribute(key, value):
         return None
 
 
+def is_integer(i):
+    i = str(i).lstrip('-+')
+    return not i.startswith('0') and i.isdigit()
+
+
 class CommonEncoder(json.JSONEncoder):
-    """deal with the decimal and binary data"""
+    # deal with the decimal and binary data, for displaying the json in the terminal
     def default(self, o):
-        if isinstance(o, decimal.Decimal):
+        if isinstance(o, Decimal):
             return float(o)
         elif isinstance(o, Binary):
             return o.value
         super(CommonEncoder, self).default(o)
 
 if __name__ == "__main__":
-    """test case"""
+    # test case
     dynamodb_record = {
         "SequenceNumber": "6321200000000003285225378",
         "Keys": {
@@ -111,6 +123,9 @@ if __name__ == "__main__":
         "OldImage": {
             "integer": {
                 "N": "123"
+            },
+            "decimal": {
+                "N": "234.1"
             },
             "string": {
                 "S": "xxx"
@@ -168,6 +183,9 @@ if __name__ == "__main__":
         "NewImage": {
             "integer": {
                 "N": "345"
+            },
+            "decimal": {
+                "N": "123.1"
             },
             "string": {
                 "S": "zzz"
