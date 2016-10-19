@@ -2,17 +2,15 @@
 
 ## the parser function
 
-parse_dynamodb_record: parse the data structure sent by DynamoDB to Lambda using python
+parse_dynamodb_record(): parse the data structure sent by DynamoDB to Lambda using python
 
 ## invoke the function
 
-```python
 parse_dynamodb_record(record)
-```
 
 ## input params
 
-    input params: a dynamodb record sent by the dynamodb trigger(lambda function)
+input params: a dynamodb record sent by the dynamodb trigger(lambda function)
 ```python
 record = {
     "SequenceNumber": "6321200000000003285225378",
@@ -45,7 +43,7 @@ record = {
 
 ## output result:
 
-    output result: the dictionary data in python
+output result: the dictionary data in python
 ```python
 {
     "SequenceNumber": "6321200000000003285225378", 
