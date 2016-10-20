@@ -68,15 +68,15 @@ def format_attribute(key, value):
             first_item_value = item.items()[0][1]
             res_array.append(format_attribute(first_item_key, first_item_value))
         return res_array
-    elif key in ['SS', 'BS']:
+    elif key in ['NS', 'SS', 'BS']:
         res_array = []
         for item in value:
             res_array.append(format_attribute(key[0], item))
         return res_array
-    elif key == 'NS':
-        # fix bug: can not invoke format_attribute() to generate the number set(NS)
-        # eg: some_set = NS[123, 12.1, 456], generate a set mixed with int and decimal if invoke format_attribute()
-        return get_number_set(value)
+    # elif key == 'NS':
+    #     # fix bug: can not invoke format_attribute() to generate the number set(NS)
+    #     # eg: some_set = NS[123, 12.1, 456], generate a set mixed with int and decimal if invoke format_attribute()
+    #     return get_number_set(value)
     elif key == 'B':
         return Binary(value)
     elif key == 'S':
@@ -98,25 +98,27 @@ def format_attribute(key, value):
         return None
 
 
-def get_number_set(number_set):
-    result = set([])
-    if is_integer_set(number_set):
-        result = set([int(i) for i in number_set])
-    else:
-        result = set([Decimal(i) for i in number_set])
-    return result
-
-
-def is_integer_set(number_set):
-    flag = True
-    for i in number_set:
-        if not is_integer(i):
-            flag = False
-            break
-    return flag
+# def get_number_set(number_set):
+#     result = set([])
+#     if is_integer_set(number_set):
+#         result = set([int(i) for i in number_set])
+#     else:
+#         result = set([Decimal(i) for i in number_set])
+#     return result
+#
+#
+# def is_integer_set(number_set):
+#     flag = True
+#     for i in number_set:
+#         if not is_integer(i):
+#             flag = False
+#             break
+#     return flag
 
 
 def is_integer(i):
+    if isinstance(i, int):
+        return True
     i = str(i).lstrip('-+')
     return not i.startswith('0') and i.isdigit()
 
