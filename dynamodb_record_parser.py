@@ -123,14 +123,20 @@ def is_integer(i):
     return not i.startswith('0') and i.isdigit()
 
 
+# Helper class to convert a DynamoDB item to JSON.
 class CommonEncoder(json.JSONEncoder):
-    # deal with the decimal and binary data, for displaying the json in the terminal
     def default(self, o):
         if isinstance(o, Decimal):
-            return float(o)
+            if o % 1 > 0:
+                return float(o)
+            else:
+                return int(o)
         elif isinstance(o, Binary):
             return o.value
+        elif isinstance(o, set):
+            return [x for x in o]
         super(CommonEncoder, self).default(o)
+
 
 if __name__ == "__main__":
     # test case
